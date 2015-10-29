@@ -1,6 +1,7 @@
 package quetue;
 
 import java.util.Date;
+import java.util.Scanner;
 
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
@@ -28,11 +29,24 @@ public class MyConsumer {
 				MessageConsumer mc = session.createConsumer(dest);
 				conn.start();
 				//拿到消息，textMessage
-				Message msg = mc.receive();
+//				Message msg = mc.receive(2000);
+//				if (msg!= null) {
+//					System.out.println(((TextMessage)msg).getText());
+//					System.out.println("Get successfully!");
+//				}else{
+//					System.out.println("Nothing received...");
+//				}
 				//打印消息
 //				mc.receive(msg);
-				System.out.println(((TextMessage)msg).getText());
-				System.out.println("Get successfully!");
+//				System.out.println(((TextMessage)msg).getText());
+//				System.out.println("Get successfully!");
+				
+				mc.setMessageListener(new MyListener());
+				System.out.println("Wating for messages..Press ENTER to exit.");
+				Scanner s = new Scanner(System.in);
+				s.next();
+				mc.setMessageListener(null);
+				
 				mc.close();
 				session.close();
 				conn.close();
